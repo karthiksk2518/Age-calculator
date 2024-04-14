@@ -38,27 +38,22 @@ const ageCalculate = () => {
 
 const calculateAge = (birthDetails, currentYear, currentMonth, currentDate) => {
     let years = currentYear - birthDetails.year;
-    let months, days;
+    let months = currentMonth - birthDetails.month;
+    let days = currentDate - birthDetails.date;
 
-    if (currentMonth <= birthDetails.month) {
-        years--;
-        months = 12 - (birthDetails.month - currentMonth);
-    }
-    else {
-        months = currentMonth - birthDetails.month;
-    }
-
-    if (currentDate < birthDetails.date) {
-        months--;
+    if(days < 0) {
         const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
         const daysInLastMonth = getDaysInMonth(lastMonth, currentYear);
-        days = daysInLastMonth - (birthDetails.date - currentDate);
-    }
-    else {
-        days = currentDate - birthDetails.date;
+        days = daysInLastMonth -  (birthDetails.date - currentDate);
+        months--;
     }
 
-    return { years, months, days };
+    if(months < 0) {
+        years--;
+        months += 12;
+    }
+
+    return {years, months, days};
 };
 
 const getDaysInMonth = (month, year) => {
